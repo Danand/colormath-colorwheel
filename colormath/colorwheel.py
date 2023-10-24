@@ -2,7 +2,7 @@ from sys import stderr
 
 from typing import List
 
-from colormath.color_objects import BaseRGBColor, HSLColor
+from colormath.color_objects import sRGBColor, HSLColor
 from colormath.color_conversions import convert_color
 
 def normalize_saturation(saturation: float) -> float:
@@ -11,9 +11,9 @@ def normalize_saturation(saturation: float) -> float:
     else:
         return saturation % 1
 
-def parse_rgb_from_hex(hex_color: str) -> BaseRGBColor | str:
+def parse_rgb_from_hex(hex_color: str) -> sRGBColor | str:
     try:
-        return BaseRGBColor.new_from_rgb_hex(hex_color)
+        return sRGBColor.new_from_rgb_hex(hex_color)
     except:
         print(f"warning: Failed to parse `{hex_color}` as color", file=stderr)
         return hex_color
@@ -23,10 +23,10 @@ class Wheel:
         self.rgb_colors = [parse_rgb_from_hex(hex_color) for hex_color in hex_colors]
 
     def rotate_from_to(self, hex_color_from: str, hex_color_to: str) -> List[str]:
-        rgb_color_from = BaseRGBColor.new_from_rgb_hex(hex_color_from)
+        rgb_color_from = sRGBColor.new_from_rgb_hex(hex_color_from)
         hsl_color_from: HSLColor = convert_color(rgb_color_from, HSLColor)
 
-        rgb_color_to = BaseRGBColor.new_from_rgb_hex(hex_color_to)
+        rgb_color_to = sRGBColor.new_from_rgb_hex(hex_color_to)
         hsl_color_to: HSLColor = convert_color(rgb_color_to, HSLColor)
 
         diff_hue = hsl_color_to.hsl_h - hsl_color_from.hsl_h
@@ -36,7 +36,7 @@ class Wheel:
         hex_colors: List[str] = []
 
         for rgb_color in self.rgb_colors:
-            if not isinstance(rgb_color, BaseRGBColor):
+            if not isinstance(rgb_color, sRGBColor):
                 hex_colors.append(rgb_color)
                 print(f"warning: `{rgb_color}` is not color, bypassing it on rotation", file=stderr)
                 continue
@@ -48,7 +48,7 @@ class Wheel:
             new_lightness = max(0, min(1, hsl_color.hsl_l + diff_lightness))
 
             hsl_color_rotated = HSLColor(new_hue, new_saturation, new_lightness)
-            rgb_color_rotated: BaseRGBColor = convert_color(hsl_color_rotated, BaseRGBColor)
+            rgb_color_rotated: sRGBColor = convert_color(hsl_color_rotated, sRGBColor)
 
             hex_colors.append(rgb_color_rotated.get_rgb_hex())
 
