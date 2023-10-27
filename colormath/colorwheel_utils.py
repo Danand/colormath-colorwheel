@@ -20,7 +20,3 @@ def rotate_color(
 
     return color_rotated
 
-def colors_equal(color_left: HSLColor, color_right: HSLColor) -> bool:
-    return abs(color_left.hsl_h - color_right.hsl_h) < 0.01 and \
-           abs(color_left.hsl_s - color_right.hsl_s) < 0.01 and \
-           abs(color_left.hsl_l - color_right.hsl_l) < 0.01
