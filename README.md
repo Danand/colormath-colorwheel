@@ -14,3 +14,7 @@ pip install git+https://github.com/Danand/colormath-colorwheel.git
 wheel = Wheel(colors_original)
 colors_rotated = wheel.rotate_from_to(color_from, color_to)
 ```
+
+## Used by
+
+- [`terminal-colors-generator`](https://github.com/Danand/terminal-colors-generator)
